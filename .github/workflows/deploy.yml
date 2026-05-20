@@ -3,7 +3,7 @@ name: Build and Deploy WebAssembly App
 on:
   push:
     branches:
-      - main  # Déclenche la compilation à chaque push sur la branche main
+      - main
 
 permissions:
   contents: read
@@ -21,19 +21,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 1. On installe CMake et SDL3 de base sur le conteneur Linux
       - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y cmake ninja-build
 
-      # 2. On installe l'environnement Emscripten automatiquement
       - name: Setup Emscripten toolchain
         uses: mymindstorm/setup-emsdk@v14
         with:
-          version: 4.0.17 # On utilise la même version que sur ton Mac !
+          version: 4.0.17
 
-      # 3. On compile le projet exactement comme sur ton Mac
       - name: Build with CMake
         run: |
           mkdir build_web
@@ -41,7 +38,6 @@ jobs:
           cmake .. -DCMAKE_TOOLCHAIN_FILE=$EMSDK/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "Ninja"
           cmake --build .
 
-      # 4. On prépare les fichiers (html, js, wasm) pour le déploiement
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -50,7 +46,7 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      url: ${{ steps: deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build-wasm
     steps:
