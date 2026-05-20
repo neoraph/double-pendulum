@@ -4,6 +4,8 @@
 
 This project started with a dual motivation. First, a deep curiosity for physical systems and the desire to build a pure, deterministic chaotic simulator from scratch. Second, a perfect opportunity to experiment with **WebAssembly (WASM) compilation**. The goal was to write raw, high-performance C++ code using **SDL3** and deploy it directly into modern web browsers with near-native performance, leaving all graphics computation to the GPU via WebGL.
 
+Visit the [page](https://neoraph.github.io/double-pendulum/) of the repo to see what's the result !
+
 ---
 
 ## Features
